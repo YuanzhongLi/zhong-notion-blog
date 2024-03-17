@@ -2,28 +2,28 @@
 import {
   getPostsByPage,
   getNumberOfPages,
-} from '../../../lib/notion/client.ts'
+} from '../../../lib/notion/client.ts';
 import Layout from '../../../layouts/Layout.astro';
 import Pagination from '../../../components/Pagination.astro';
 import BlogSections from '../../../components/BlogSections/BlogSections.astro';
 import ArticleCover from '../../../components/Cover/ArticleCover.astro';
 
 export async function getStaticPaths() {
-  const numberOfPages = await getNumberOfPages()
+  const numberOfPages = await getNumberOfPages();
 
-  let params = []
+  const params = [];
   for (let i = 2; i <= numberOfPages; i++) {
-    params.push({ params: { page: i.toString() } })
+    params.push({ params: { page: i.toString() } });
   }
-  return params
+  return params;
 }
 
-const { page } = Astro.params
+const { page } = Astro.params;
 
 const [posts, numberOfPages] = await Promise.all([
   getPostsByPage(parseInt(page, 10)),
   getNumberOfPages(),
-])
+]);
 ---
 
 <Layout title={`Posts ${page}/${numberOfPages}`} description='' path={`/posts/page/${page}`} ogImage=''>

@@ -1,42 +1,37 @@
 ---
-import * as interfaces from '../../lib/interfaces.ts'
-import { buildHeadingId } from '../../lib/blog-helpers.ts'
-import { snakeToKebab } from '../../lib/style-helpers.ts'
-import '../../styles/notion-color.css'
+import {type Block, type RichText, type Heading1, type Heading2, type Heading3 } from '../../../lib/interfaces';
+import { buildHeadingId } from '../../../lib/blog-helpers';
+import '../../../styles/notion-color.css';
 
 export interface Props {
-  block: interfaces.Block
-  headings: interfaces.Block[]
+  headings: Block[]
 }
 
-const { block, headings } = Astro.props
+const { headings } = Astro.props;
 ---
 
 <div class="table-of-contents">
   {
-    headings.map((headingBlock: interfaces.Block) => {
-      const heading =
-        headingBlock.Heading1 || headingBlock.Heading2 || headingBlock.Heading3
+    headings.map((headingBlock: Block) => {
+      const heading = headingBlock.Heading1 || headingBlock.Heading2 || headingBlock.Heading3 as (Heading1 | Heading2 | Heading3);
 
-      let indentClass = ''
+      let indentClass = '';
       if (headingBlock.Type === 'heading_2') {
-        indentClass = 'indent-1'
+        indentClass = 'indent-1';
       } else if (headingBlock.Type === 'heading_3') {
-        indentClass = 'indent-2'
+        indentClass = 'indent-2';
       }
 
       return (
         <a
           href={`#${buildHeadingId(heading)}`}
-          class={`table-of-contents ${snakeToKebab(
-            block.TableOfContents.Color
-          )} ${indentClass}`}
+          class={`table-of-contents ${indentClass}`}
         >
           {heading.RichTexts.map(
-            (richText: interfaces.RichText) => richText.PlainText
+            (richText: RichText) => richText.PlainText,
           ).join('')}
         </a>
-      )
+      );
     })
   }
 </div>

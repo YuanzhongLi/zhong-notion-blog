@@ -4,6 +4,7 @@ import axios, { type AxiosResponse } from 'axios'
 import sharp from 'sharp'
 import retry from 'async-retry'
 import ExifTransformer from 'exif-be-gone'
+import { Client, APIResponseError } from '@notionhq/client'
 import {
   NOTION_API_SECRET,
   DATABASE_ID,
@@ -53,7 +54,6 @@ import type {
   Reference,
 } from '../interfaces'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-import { Client, APIResponseError } from '@notionhq/client'
 
 const client = new Client({
   auth: NOTION_API_SECRET,
@@ -124,7 +124,7 @@ export async function getAllPosts(): Promise<Post[]> {
       break
     }
 
-    params['start_cursor'] = res.next_cursor as string
+    params.start_cursor = res.next_cursor as string
   }
 
   postsCache = results
@@ -145,7 +145,8 @@ export async function getRankedPosts(pageSize = 10): Promise<Post[]> {
     .sort((a, b) => {
       if (a.Rank > b.Rank) {
         return -1
-      } else if (a.Rank === b.Rank) {
+      }
+      if (a.Rank === b.Rank) {
         return 0
       }
       return 1
@@ -265,7 +266,7 @@ export async function getAllBlocksByBlockId(blockId: string): Promise<Block[]> {
         break
       }
 
-      params['start_cursor'] = res.next_cursor as string
+      params.start_cursor = res.next_cursor as string
     }
   }
 
@@ -395,7 +396,7 @@ export async function downloadFile(url: URL) {
     return Promise.resolve()
   }
 
-  const dir = './public/notion/' + url.pathname.split('/').slice(-2)[0]
+  const dir = `./public/notion/${url.pathname.split('/').slice(-2)[0]}`
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir)
   }
@@ -412,7 +413,7 @@ export async function downloadFile(url: URL) {
     stream = stream.pipe(rotate)
   }
   try {
-    return pipeline(stream, new ExifTransformer(), writeStream)
+    return await pipeline(stream, new ExifTransformer(), writeStream)
   } catch (err) {
     console.log(err)
     writeStream.end()
@@ -810,7 +811,7 @@ async function _getTableRows(blockId: string): Promise<TableRow[]> {
         break
       }
 
-      params['start_cursor'] = res.next_cursor as string
+      params.start_cursor = res.next_cursor as string
     }
   }
 
@@ -875,11 +876,11 @@ async function _getColumns(blockId: string): Promise<Column[]> {
         break
       }
 
-      params['start_cursor'] = res.next_cursor as string
+      params.start_cursor = res.next_cursor as string
     }
   }
 
-  return await Promise.all(
+  return Promise.all(
     results.map(async (blockObject) => {
       const children = await getAllBlocksByBlockId(blockObject.id)
 
