@@ -1,10 +1,10 @@
 ---
-import { PUBLIC_GA_TRACKING_ID, ENABLE_LIGHTBOX } from '../server-constants.ts'
-import { getDatabase } from '../lib/notion/client.ts'
-import { getNavLink, getStaticFilePath, filePath } from '../lib/blog-helpers.ts'
-import '../styles/syntax-coloring.css'
-import GoogleAnalytics from '../components/GoogleAnalytics.astro'
-import SearchModal from '../components/SearchModal.astro'
+import { PUBLIC_GA_TRACKING_ID, ENABLE_LIGHTBOX } from '../server-constants';
+import { getDatabase } from '../lib/notion/client';
+import { getNavLink, getStaticFilePath } from '../lib/blog-helpers';
+import '../styles/syntax-coloring.css';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
+import SearchModal from '../components/SearchModal.astro';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 
@@ -15,39 +15,19 @@ export interface Props {
   ogImage: string
 }
 
-const { title = '', description = '', path = '/', ogImage = '' } = Astro.props
+const {
+  title = '', description = '', path = '/', ogImage = '',
+} = Astro.props;
 
-const database = await getDatabase()
+const database = await getDatabase();
 
-const siteTitle = title ? `${title} - ${database.Title}` : database.Title
-const siteDescription = description ? description : database.Description
-const siteURL = new URL(getNavLink(path), Astro.site).toString()
+const siteTitle = title ? `${title} - ${database.Title}` : database.Title;
+const siteDescription = description || database.Description;
+const siteURL = new URL(getNavLink(path), Astro.site).toString();
 const siteOGImage = new URL(
   getStaticFilePath('/default-og-image.png'),
-  Astro.site
-)
-
-let coverImageURL: string
-if (database.Cover) {
-  if (database.Cover.Type === 'external') {
-    coverImageURL = database.Cover.Url
-  } else if (database.Cover.Type === 'file') {
-    try {
-      coverImageURL = filePath(new URL(database.Cover.Url))
-    } catch (err) {
-      console.log('Invalid DB cover image URL')
-    }
-  }
-}
-
-let customIconURL: string
-if (database.Icon && database.Icon.Type === 'file') {
-  try {
-    customIconURL = filePath(new URL(database.Icon.Url))
-  } catch (err) {
-    console.log('Invalid DB custom icon URL')
-  }
-}
+  Astro.site,
+);
 ---
 
 <!DOCTYPE html>
@@ -79,17 +59,12 @@ if (database.Icon && database.Icon.Type === 'file') {
 
   <body class="overflow-auto">
     <GoogleAnalytics trackingId={PUBLIC_GA_TRACKING_ID} />
-
     {<Header />}
 
-    <div class="max-w-[65rem] flex flex-col mx-auto size-full">
-      <slot name="main" />
-    </div>
+    <slot name="main" />
 
     {<Footer />}
-
     {<SearchModal />}
-
     {
       ENABLE_LIGHTBOX && (
         <script src={getStaticFilePath('/scripts/fslightbox.js')} />
@@ -122,6 +97,14 @@ if (database.Icon && database.Icon.Type === 'file') {
       'Helvetica Neue', sans-serif;
     --font-mono: SFMono-Regular, Menlo, Consolas, 'PT Mono', 'Liberation Mono',
       Courier, monospace;
+
+    --article-max-width: 720px;
+    --header1-max-height: 68px;
+
+    /* 記事内のtoggle headerがアンカーリンクから飛べるための調整 */
+    --adjust-sticky-header-toggle-h1-height: 30px;
+    --adjust-sticky-header-toggle-h2-height: 25px;
+    --adjust-sticky-header-toggle-h3-height: 20px;
   }
 
   * {

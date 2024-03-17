@@ -1,26 +1,27 @@
 ---
-import { NUMBER_OF_POSTS_PER_PAGE } from '../server-constants.ts'
+import { NUMBER_OF_POSTS_PER_PAGE } from '../server-constants.ts';
 import {
   getPosts,
   getNumberOfPages,
-} from '../lib/notion/client.ts'
-import Layout from '../layouts/Layout.astro'
-import Pagination from '../components/Pagination.astro'
-import BlogSections from '../components/BlogSections/BlogSections.astro'
+} from '../lib/notion/client.ts';
+import Layout from '../layouts/Layout.astro';
+import Pagination from '../components/Pagination.astro';
+import BlogSections from '../components/BlogSections/BlogSections.astro';
 import Cover from '../components/Cover/HomeCover.astro';
 
 const [posts, numberOfPages] = await Promise.all([
   getPosts(NUMBER_OF_POSTS_PER_PAGE),
   getNumberOfPages(),
-])
+]);
 ---
 
 <Layout title='' description='' path='/' ogImage=''>
-  <div slot="main">
+  <div
+    slot="main"
+    class="md:w-[80vw] lg:w-[70vw] flex flex-col mx-auto size-full"
+  >
     <Cover />
-
     {<BlogSections posts={posts} />}
-
     <Pagination
       currentPage={1}
       numberOfPages={numberOfPages}
