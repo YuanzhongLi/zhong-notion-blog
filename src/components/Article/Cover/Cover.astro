@@ -1,0 +1,33 @@
+---
+import type { Icon, SelectProperty } from '../../../lib/interfaces';
+import PostTitle from './PostTitle.astro';
+import Date from '../../BlogSections/Date.astro';
+import PostTags from '../../PostTags.astro';
+
+export interface Props {
+  title: string;
+  icon: Icon;
+  date: string;
+  tags: SelectProperty[];
+}
+
+const {
+  title = 'Untitled Post',
+  icon = null,
+  date = '2024-01-01',
+  tags = [],
+} = Astro.props;
+
+---
+<div>
+  <PostTitle title={title} icon={icon} />
+  <Date date={date} />
+  <PostTags tags={tags} enableLink={true}/>
+  <div class="cover-image w-full">
+    <img
+      class="size-full object-cover"
+      src={'/src/images/no-image.png'}
+      alt="Image Description"
+      >
+  </div>
+</div>

@@ -1,8 +1,11 @@
 name: Lint
 
 on:
-  push:
+  # push:
+  #   branches:
+  deployment:
     branches:
+      - main
 
 permissions:
   checks: write
