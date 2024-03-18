@@ -17,13 +17,11 @@ import {
   extractTargetBlocks,
 } from '../../lib/blog-helpers';
 import Layout from '../../layouts/Layout.astro';
-import PostDate from '../../components/PostDate.astro';
-import PostTags from '../../components/PostTags.astro';
-import PostTitle from '../../components/PostTitle.astro';
 import PostBody from '../../components/PostBody.astro';
 import SideTableOfContents from '../../components/Article/TableOfContents/SideTableOfContents.astro';
 import MainTableOfContents from '../../components/Article/TableOfContents/MainTableOfContents.astro';
 import BlogSections from '../../components/BlogSections/BlogSections.astro';
+import ArticleCover from '../../components/Article/Cover/Cover.astro';
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
@@ -37,7 +35,7 @@ if (!post) {
   throw new Error(`Post not found. slug: ${slug}`);
 }
 
-const [blocks, allPosts, rankedPosts, recentPosts, tags, postsHavingSameTag] = await Promise.all([
+const [blocks, allPosts, rankedPosts, recentPosts, allTags, postsHavingSameTag] = await Promise.all([
   getAllBlocksByBlockId(post.PageId),
   getAllPosts(),
   getRankedPosts(),
@@ -59,8 +57,13 @@ const fileAtacchedBlocks = extractTargetBlocks('image', blocks)
 // Download files
 await Promise.all(
   fileAtacchedBlocks
-    .map(async (block) => {
-      const expiryTime = (block.Image || block.File).File.ExpiryTime;
+    .map(async (block: interfaces.Block) => {
+      let expiryTime = '';
+      if (block.Image) {
+        expiryTime = block.Image.File?.ExpiryTime as string;
+      } else if (block.File) {
+        expiryTime = block.File.File?.ExpiryTime as string;
+      }
       if (Date.parse(expiryTime) > Date.now()) {
         return Promise.resolve(block);
       }
@@ -69,7 +72,13 @@ await Promise.all(
     .map((promise) => promise.then((block) => {
       let url!: URL;
       try {
-        url = new URL((block.Image || block.File).File.Url);
+        if (block.Image) {
+          url = new URL(block.Image.File?.Url as string);
+        } else if (block.File) {
+          url = new URL(block.File.File?.Url as string);
+        } else {
+          throw new Error('Invalid file URL');
+        }
       } catch (err) {
         console.log('Invalid file URL');
         return Promise.reject();
@@ -79,12 +88,17 @@ await Promise.all(
     .map((promise) => promise.then(downloadFile)),
 );
 
-let ogImage = '';
+let ogImage: string = '';
 if (post.FeaturedImage && post.FeaturedImage.Url) {
-  ogImage = new URL(filePath(new URL(post.FeaturedImage.Url)), Astro.site);
+  const ogImageURL = new URL(filePath(new URL(post.FeaturedImage.Url)), Astro.site);
+  ogImage = ogImageURL.toString();
 }
 
 const headings = blocks.filter((b: interfaces.Block) => ['heading_1', 'heading_2', 'heading_3'].includes(b.Type));
+const title = post.Title;
+const icon = post.Icon;
+const date = post.Date;
+const tags = post.Tags;
 ---
 
 <Layout
@@ -98,12 +112,9 @@ const headings = blocks.filter((b: interfaces.Block) => ['heading_1', 'heading_2
       class="article-with-toc"
     >
       <div class="main-article">
-        <PostDate post={post} />
-        <PostTags post={post} />
-        <PostTitle post={post} enableLink={false} />
+        <ArticleCover title={title} icon={icon} date={date} tags={tags}/>
         <MainTableOfContents headings={headings} />
         <PostBody blocks={blocks} />
-        <PostTags post={post} />
       </div>
 
       <div

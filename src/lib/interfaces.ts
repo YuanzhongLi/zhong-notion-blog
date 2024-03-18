@@ -1,14 +1,16 @@
+export type Icon = FileObject | Emoji | null;
+
 export interface Database {
   Title: string
   Description: string
-  Icon: FileObject | Emoji | null
+  Icon: Icon
   Cover: FileObject | null
 }
 
 export interface Post {
   PageId: string
   Title: string
-  Icon: FileObject | Emoji | null
+  Icon: Icon
   Cover: FileObject | null
   Slug: string
   Date: string
@@ -144,7 +146,7 @@ export interface Equation {
 
 export interface Callout {
   RichTexts: RichText[]
-  Icon: FileObject | Emoji | null
+  Icon: Icon
   Color: string
   Children?: Block[]
 }

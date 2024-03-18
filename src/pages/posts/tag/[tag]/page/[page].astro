@@ -1,16 +1,16 @@
 ---
-import type { SelectProperty } from '../../../../../lib/interfaces.ts';
+import type { SelectProperty } from '../../../../../lib/interfaces';
 import {
   getPostsByTagAndPage,
   getRankedPosts,
   getAllTags,
   getNumberOfPagesByTag,
-} from '../../../../../lib/notion/client.ts';
+} from '../../../../../lib/notion/client';
 import Layout from '../../../../../layouts/Layout.astro';
 import NoContents from '../../../../../components/NoContents.astro';
 import PostDate from '../../../../../components/PostDate.astro';
 import PostTags from '../../../../../components/PostTags.astro';
-import PostTitle from '../../../../../components/PostTitle.astro';
+import PostTitle from '../../../../../components/Article/Cover/PostTitle.astro';
 import PostFeaturedImage from '../../../../../components/PostFeaturedImage.astro';
 import PostExcerpt from '../../../../../components/PostExcerpt.astro';
 import ReadMoreLink from '../../../../../components/ReadMoreLink.astro';

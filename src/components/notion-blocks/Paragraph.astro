@@ -2,7 +2,7 @@
 import { type Block, type RichText } from '../../lib/interfaces';
 import { snakeToKebab } from '../../lib/style-helpers';
 import RichTextComponent from './RichText.astro';
-import NotionBlocks from '../NotionBlocks.astro';
+import NotionBlocksComponent from '../NotionBlocks.astro';
 import '../../styles/notion-color.css';
 
 export interface Props {
@@ -20,7 +20,7 @@ const { block, headings } = Astro.props;
   }
   {
     block.Paragraph.Children && (
-      <NotionBlocks blocks={block.Paragraph.Children} headings={headings} />
+      <NotionBlocksComponent blocks={block.Paragraph.Children} headings={headings} />
     )
   }
 </p>
