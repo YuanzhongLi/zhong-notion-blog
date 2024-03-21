@@ -26,11 +26,13 @@ export async function getStaticPaths() {
   const params = [];
 
   await Promise.all(
-    allTags.map((tag: SelectProperty) => getNumberOfPagesByTag(tag.name).then((numberOfPages: number) => {
-      for (let i = 2; i <= numberOfPages; i++) {
-        params.push({ params: { tag: tag.name, page: i.toString() } });
-      }
-    })),
+    allTags
+      .map((tag: SelectProperty) => getNumberOfPagesByTag(tag.name)
+        .then((numberOfPages: number) => {
+          for (let i = 2; i <= numberOfPages; i += 1) {
+            params.push({ params: { tag: tag.name, page: i.toString() } });
+          }
+        })),
   );
 
   return params;
@@ -50,7 +52,9 @@ const currentTag = posts[0].Tags.find((t) => t.name === tag);
 
 <Layout
   title={`Posts in ${tag} ${page}/${numberOfPages}`}
+  description=''
   path={`/posts/tag/${tag}/page/${page}`}
+  ogImage=''
 >
   <div slot="main" class={styles.main}>
     <header>

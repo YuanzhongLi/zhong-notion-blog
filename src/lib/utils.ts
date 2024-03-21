@@ -25,9 +25,9 @@ export const formatDate = (date: string) => {
     const yyyy = date.slice(0, 4)
     const mm = date.slice(5, 7)
     const dd = date.slice(8, 10)
-    const y = new Number(yyyy)
-    const m = new Number(mm)
-    const d = new Number(dd)
+    const y = Number(yyyy)
+    const m = Number(mm)
+    const d = Number(dd)
 
     return `${Months[(m as number) - 1]} ${d}, ${y}`
   } catch (e) {

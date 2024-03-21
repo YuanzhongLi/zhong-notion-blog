@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import fetch from 'node-fetch'
 import { BASE_PATH, REQUEST_TIMEOUT_MS } from '../server-constants'
 import type {
@@ -27,7 +29,7 @@ export const extractTargetBlocks = (
 
       if (block.ColumnList && block.ColumnList.Columns) {
         acc = acc.concat(
-          _extractTargetBlockFromColums(blockType, block.ColumnList.Columns)
+          extractTargetBlockFromColums(blockType, block.ColumnList.Columns)
         )
       } else if (block.BulletedListItem && block.BulletedListItem.Children) {
         acc = acc.concat(
@@ -71,7 +73,7 @@ export const extractTargetBlocks = (
     }, [])
     .flat()
 
-const _extractTargetBlockFromColums = (
+const extractTargetBlockFromColums = (
   blockType: string,
   columns: Column[]
 ): Block[] =>
