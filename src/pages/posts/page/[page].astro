@@ -2,7 +2,7 @@
 import {
   getPostsByPage,
   getNumberOfPages,
-} from '../../../lib/notion/client.ts';
+} from '../../../lib/notion/client';
 import Layout from '../../../layouts/Layout.astro';
 import Pagination from '../../../components/Pagination.astro';
 import BlogSections from '../../../components/BlogSections/BlogSections.astro';
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   const numberOfPages = await getNumberOfPages();
 
   const params = [];
-  for (let i = 2; i <= numberOfPages; i++) {
+  for (let i = 2; i <= numberOfPages; i += 1) {
     params.push({ params: { page: i.toString() } });
   }
   return params;

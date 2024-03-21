@@ -6,14 +6,12 @@ const notion = new Client({ auth: process.env.NOTION_API_SECRET });
 
 const requestDuration = 300;
 
-const retry = (maxRetries, fn) => {
-  return fn().catch(function (err) {
-    if (maxRetries <= 0) {
-      throw err;
-    }
-    return retry(maxRetries - 1, fn);
-  });
-};
+const retry = (maxRetries, fn) => fn().catch((err) => {
+  if (maxRetries <= 0) {
+    throw err;
+  }
+  return retry(maxRetries - 1, fn);
+});
 
 const retrieveAndWriteBlockChildren = async (blockId) => {
   const params = { block_id: blockId };
@@ -33,22 +31,22 @@ const retrieveAndWriteBlockChildren = async (blockId) => {
       break;
     }
 
-    params['start_cursor'] = res.next_cursor;
+    params.start_cursor = res.next_cursor;
   }
 
   fs.writeFileSync(`tmp/${blockId}.json`, JSON.stringify(results));
 
   results.forEach(async (block) => {
     if (
-      block.type === 'synced_block' &&
-      block.synced_block.synced_from &&
-      block.synced_block.synced_from.block_id
+      block.type === 'synced_block'
+      && block.synced_block.synced_from
+      && block.synced_block.synced_from.block_id
     ) {
       try {
         await retrieveAndWriteBlock(block.synced_block.synced_from.block_id);
       } catch (err) {
         console.log(
-          `Could not retrieve the original synced_block. error: ${err}`
+          `Could not retrieve the original synced_block. error: ${err}`,
         );
         throw err;
       }
