@@ -20,9 +20,13 @@ for (let i = startPage; i <= endPage; i += 1) {
   pages.push(i);
 }
 ---
-
 <div class="pagination mb-5">
-  <a href={getPageLink(1, tag)} class={isFirstPage && 'inactive'}>&lt;&lt;</a>
+  <a
+    href={getPageLink(1, tag)}
+    class={isFirstPage ? 'inactive' : ''}
+  >
+    &lt;&lt;
+  </a>
   {
     pages.map((p: number) => (
       <a href={getPageLink(p, tag)} class={p === currentPage && 'inactive'}>
@@ -53,7 +57,7 @@ for (let i = startPage; i <= endPage; i += 1) {
     color: inherit;
     font-size: 0.85rem;
     text-align: center;
-    text-decoration: underline;
+    text-decoration: none;
     font-weight: 500;
     line-height: 3rem;
   }

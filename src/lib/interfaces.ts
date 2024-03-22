@@ -1,4 +1,4 @@
-export type Icon = FileObject | Emoji | null
+export type Icon = FileObject | Emoji | null;
 
 export interface Database {
   Title: string
@@ -266,4 +266,11 @@ export interface Mention {
 
 export interface Reference {
   Id: string
+}
+
+export interface StaticTagParams {
+  params: {
+    tag: string
+    page: string
+  }
 }
