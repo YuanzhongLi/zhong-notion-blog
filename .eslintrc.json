@@ -10,7 +10,7 @@
     "project": true,
     "extraFileExtensions": [".astro"]
   },
-  "ignorePatterns": ["public/scripts/fslightbox.js"],
+  "ignorePatterns": ["public/scripts/**"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "error",

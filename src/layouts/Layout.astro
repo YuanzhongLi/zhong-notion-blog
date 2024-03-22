@@ -1,5 +1,5 @@
 ---
-import { PUBLIC_GA_TRACKING_ID, ENABLE_LIGHTBOX } from '../server-constants';
+import { PUBLIC_GA_TRACKING_ID, ENABLE_LIGHTBOX, ENABLE_PRELINE } from '../server-constants';
 import { getDatabase } from '../lib/notion/client';
 import { getNavLink, getStaticFilePath } from '../lib/blog-helpers';
 import '../styles/syntax-coloring.css';
@@ -59,21 +59,24 @@ const siteOGImage = new URL(
 
   <body class="overflow-auto">
     <GoogleAnalytics trackingId={PUBLIC_GA_TRACKING_ID} />
-    {<Header />}
+    <Header />
 
     <slot name="main" />
 
-    {<Footer />}
-    {<SearchModal />}
+    <Footer />
+    <SearchModal />
     {
       ENABLE_LIGHTBOX && (
         <script src={getStaticFilePath('/scripts/fslightbox.js')} />
       )
     }
+    {
+      ENABLE_PRELINE && (
+        <script src={getStaticFilePath('/scripts/preline.js')} />
+      )
+    }
   </body>
 </html>
-
-<script is:inline src="../../node_modules/preline/preline.js"></script>
 
 <style is:global>
   :root {

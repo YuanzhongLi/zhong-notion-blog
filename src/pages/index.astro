@@ -16,12 +16,9 @@ const [posts, numberOfPages] = await Promise.all([
 ---
 
 <Layout title='' description='' path='/' ogImage=''>
-  <div
-    slot="main"
-    class="md:w-[80vw] lg:w-[70vw] flex flex-col mx-auto size-full"
-  >
+  <div slot="main" class="md:w-[80vw] lg:w-[70vw] flex flex-col mx-auto size-full">
     <Cover />
-    {<BlogSections posts={posts} />}
+    <BlogSections posts={posts} />
     <Pagination
       currentPage={1}
       numberOfPages={numberOfPages}
