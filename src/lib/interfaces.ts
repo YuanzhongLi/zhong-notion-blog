@@ -274,3 +274,8 @@ export interface StaticTagParams {
     page: string
   }
 }
+
+export interface NavbarAnchor {
+  content: string
+  href: string
+}

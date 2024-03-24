@@ -1,7 +1,13 @@
 ---
 import Header1st from './Header1st.astro';
 import Header2nd from './Header2nd.astro';
+
+export interface Props {
+  categories: string[];
+}
+
+const { categories = [] } = Astro.props;
 ---
 
-{<Header1st />}
-{<Header2nd />}
+<Header1st categories={categories}/>
+<Header2nd />
