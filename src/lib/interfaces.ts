@@ -18,6 +18,7 @@ export interface Post {
   Excerpt: string
   FeaturedImage: FileObject | null
   Rank: number
+  badge?: string
 }
 
 export interface Block {
@@ -273,4 +274,9 @@ export interface StaticTagParams {
     tag: string
     page: string
   }
+}
+
+export interface NavbarAnchor {
+  content: string
+  href: string
 }

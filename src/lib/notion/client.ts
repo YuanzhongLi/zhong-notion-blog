@@ -11,6 +11,7 @@ import {
   NOTION_API_SECRET,
   DATABASE_ID,
   NUMBER_OF_POSTS_PER_PAGE,
+  NUMBER_OF_RELATED_POSTS_PER_PAGE,
   REQUEST_TIMEOUT_MS,
 } from '../../server-constants';
 import { SLUG_PAGE_ID_MAPPING } from '../../slug_to_pageid';
@@ -187,12 +188,43 @@ export async function getPostsByTag(
   tagName: string,
   pageSize = 10,
 ): Promise<Post[]> {
-  if (!tagName) return [];
+  if (!tagName) {
+    return [];
+  }
 
   const allPosts = await getAllPosts();
   return allPosts
     .filter((post) => post.Tags.find((tag) => tag.name === tagName))
     .slice(0, pageSize);
+}
+
+export function getTagNamesByPost(post: Post): string[] {
+  return post.Tags
+    .map((tag) => tag.name)
+    .filter((name) => !!name);
+}
+
+export async function getPostsByTags(
+  tagNames: string[],
+  pageSize = 10,
+): Promise<Post[]> {
+  if (!tagNames.length) {
+    return [];
+  }
+
+  const allPosts = await getAllPosts();
+  return allPosts
+    .filter((post) => post.Tags.find((tag) => tagNames.includes(tag.name)))
+    .slice(0, pageSize);
+}
+
+export function retrieveRelatedPostsWithoutCurrentPost(
+  posts: Post[],
+  currentPost: Post,
+): Post[] {
+  return posts
+    .filter((post) => post.PageId !== currentPost.PageId)
+    .slice(0, NUMBER_OF_RELATED_POSTS_PER_PAGE);
 }
 
 // page starts from 1 not 0

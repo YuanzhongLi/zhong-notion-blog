@@ -1,8 +1,9 @@
 ---
-import { PUBLIC_GA_TRACKING_ID, ENABLE_LIGHTBOX, ENABLE_PRELINE } from '../server-constants';
-import { getDatabase } from '../lib/notion/client';
+import { PUBLIC_GA_TRACKING_ID, ENABLE_LIGHTBOX } from '../server-constants';
+import { getDatabase, getAllTags } from '../lib/notion/client';
 import { getNavLink, getStaticFilePath } from '../lib/blog-helpers';
 import '../styles/syntax-coloring.css';
+
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import SearchModal from '../components/SearchModal.astro';
 import Header from '../components/Header/Header.astro';
@@ -20,6 +21,8 @@ const {
 } = Astro.props;
 
 const database = await getDatabase();
+const categories: string[] = await getAllTags()
+  .then((tags) => tags.map((tag) => tag.name));
 
 const siteTitle = title ? `${title} - ${database.Title}` : database.Title;
 const siteDescription = description || database.Description;
@@ -57,9 +60,9 @@ const siteOGImage = new URL(
     />
   </head>
 
-  <body class="overflow-auto">
+  <body>
     <GoogleAnalytics trackingId={PUBLIC_GA_TRACKING_ID} />
-    <Header />
+    <Header categories={categories}/>
 
     <slot name="main" />
 
@@ -70,13 +73,9 @@ const siteOGImage = new URL(
         <script src={getStaticFilePath('/scripts/fslightbox.js')} />
       )
     }
-    {
-      ENABLE_PRELINE && (
-        <script src={getStaticFilePath('/scripts/preline.js')} />
-      )
-    }
   </body>
 </html>
+<script is:inline src={getStaticFilePath('/scripts/preline.js')} />
 
 <style is:global>
   :root {

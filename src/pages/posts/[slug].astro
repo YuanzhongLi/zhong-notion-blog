@@ -1,13 +1,12 @@
 ---
 import * as interfaces from '../../lib/interfaces';
 import {
-  getPosts,
   getAllPosts,
-  getRankedPosts,
   getPostBySlug,
-  getPostsByTag,
+  getTagNamesByPost,
+  getPostsByTags,
+  retrieveRelatedPostsWithoutCurrentPost,
   getBlock,
-  getAllTags,
   getAllBlocksByBlockId,
   downloadFile,
 } from '../../lib/notion/client';
@@ -20,7 +19,7 @@ import Layout from '../../layouts/Layout.astro';
 import PostBody from '../../components/PostBody.astro';
 import SideTableOfContents from '../../components/Article/TableOfContents/SideTableOfContents.astro';
 import MainTableOfContents from '../../components/Article/TableOfContents/MainTableOfContents.astro';
-import BlogSections from '../../components/BlogSections/BlogSections.astro';
+import RelatedBlogSections from '../../components/BlogSections/RelatedBlogSections.astro';
 import ArticleCover from '../../components/Article/Cover/Cover.astro';
 
 export async function getStaticPaths() {
@@ -38,18 +37,10 @@ if (!post) {
 
 const [
   blocks,
-  allPosts,
-  rankedPosts,
-  recentPosts,
-  allTags,
   postsHavingSameTag,
 ] = await Promise.all([
   getAllBlocksByBlockId(post.PageId),
-  getAllPosts(),
-  getRankedPosts(),
-  getPosts(5),
-  getAllTags(),
-  getPostsByTag(post.Tags[0]?.name, 6),
+  getPostsByTags(getTagNamesByPost(post), 6),
 ]);
 
 const fileAtacchedBlocks = extractTargetBlocks('image', blocks)
@@ -131,7 +122,12 @@ const tags = post.Tags;
         <SideTableOfContents headings={headings} />
       </div>
     </div>
-    <BlogSections posts={postsHavingSameTag} />
+    <div class="text-center">
+      <h1 class="md:w-[80vw] lg:w-[70vw] md:mx-auto pt-10 text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-200">
+        関連記事
+      </h1>
+    </div>
+    <RelatedBlogSections posts={retrieveRelatedPostsWithoutCurrentPost(postsHavingSameTag, post)} />
   </div>
 </Layout>
 
