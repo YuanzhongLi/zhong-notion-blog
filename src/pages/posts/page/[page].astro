@@ -6,7 +6,7 @@ import {
 import Layout from '../../../layouts/Layout.astro';
 import Pagination from '../../../components/Pagination.astro';
 import BlogSections from '../../../components/BlogSections/BlogSections.astro';
-import ArticleCover from '../../../components/Cover/ArticleCover.astro';
+import HomeCover from '../../../components/Cover/HomeCover.astro';
 
 export async function getStaticPaths() {
   const numberOfPages = await getNumberOfPages();
@@ -28,7 +28,7 @@ const [posts, numberOfPages] = await Promise.all([
 
 <Layout title={`Posts ${page}/${numberOfPages}`} description='' path={`/posts/page/${page}`} ogImage=''>
   <div slot="main" class="md:w-[80vw] lg:w-[70vw] flex flex-col mx-auto size-full">
-    <ArticleCover />
+    <HomeCover />
     <BlogSections posts={posts} />
 
     <Pagination

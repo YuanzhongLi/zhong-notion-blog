@@ -18,7 +18,7 @@ const { tags = [], enableLink = true } = Astro.props;
         if (enableLink) {
           return (
             <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
-              {tag.name}
+              #{tag.name}
             </a>
           );
         }

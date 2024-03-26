@@ -18,6 +18,7 @@ export interface Post {
   Excerpt: string
   FeaturedImage: FileObject | null
   Rank: number
+  badge?: string
 }
 
 export interface Block {

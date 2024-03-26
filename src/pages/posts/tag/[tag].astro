@@ -3,7 +3,6 @@ import type { SelectProperty } from '../../../lib/interfaces';
 import { NUMBER_OF_POSTS_PER_PAGE } from '../../../server-constants';
 import {
   getPostsByTag,
-  getRankedPosts,
   getAllTags,
   getNumberOfPagesByTag,
 } from '../../../lib/notion/client';
@@ -21,14 +20,10 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 
-const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
+const [posts, numberOfPages] = await Promise.all([
   getPostsByTag(tag, NUMBER_OF_POSTS_PER_PAGE),
-  getRankedPosts(),
-  getAllTags(),
   getNumberOfPagesByTag(tag),
 ]);
-
-const currentTag = posts[0].Tags.find((t) => t.name === tag);
 ---
 
 <Layout
@@ -37,10 +32,13 @@ const currentTag = posts[0].Tags.find((t) => t.name === tag);
   path={`/posts/tag/${tag}`}
   ogImage=''
 >
-  <div slot="main" class="md:w-[80vw] lg:w-[70vw] flex flex-col mx-auto size-full">
-    <TagCover tag={currentTag} />
+  <div
+    slot="main"
+    class="size-full md:w-[80vw] lg:w-[70vw]
+      flex flex-col mx-auto"
+  >
+    <TagCover category={tag} />
     <BlogSections posts={posts} />
-
     <Pagination
       currentPage={1}
       numberOfPages={numberOfPages}
