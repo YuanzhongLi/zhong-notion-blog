@@ -29,7 +29,8 @@
       "rules": {
         "indent": ["error", 2, { "SwitchCase": 1 }],
         "import/prefer-default-export": "off",
-        "no-nested-ternary": "off"
+        "no-nested-ternary": "off",
+        "max-len": "off"
       }
     }
   ]
