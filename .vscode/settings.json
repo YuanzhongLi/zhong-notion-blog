@@ -9,5 +9,8 @@
   ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
+  },
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
   }
 }
