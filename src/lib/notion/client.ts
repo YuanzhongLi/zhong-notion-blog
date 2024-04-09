@@ -13,6 +13,7 @@ import {
   NUMBER_OF_POSTS_PER_PAGE,
   NUMBER_OF_RELATED_POSTS_PER_PAGE,
   REQUEST_TIMEOUT_MS,
+  ALL_POST_CACHE_TIME,
 } from '../../server-constants';
 import { SLUG_PAGE_ID_MAPPING } from '../../slug_to_pageid';
 import type * as responses from './responses';
@@ -62,10 +63,19 @@ const client = new Client({
 });
 
 let dbCache: Database | null = null;
+let allPostCache: Post[] | null = null;
+let allPostCacheTimestamp: number | null = null;
 
 const numberOfRetry = 2;
 
 export async function getAllPosts(): Promise<Post[]> {
+  const currentTime = new Date().getTime();
+
+  if (allPostCache && allPostCacheTimestamp) {
+    if (currentTime - allPostCacheTimestamp < ALL_POST_CACHE_TIME * 1000) {
+      return allPostCache;
+    }
+  }
   const params: requestParams.QueryDatabase = {
     database_id: DATABASE_ID,
     filter: {
@@ -128,9 +138,13 @@ export async function getAllPosts(): Promise<Post[]> {
     params.start_cursor = res.next_cursor as string;
   }
 
-  return results
+  allPostCache = results
     .filter((pageObject) => isValidPageObject(pageObject))
     .map((pageObject) => buildPost(pageObject));
+
+  allPostCacheTimestamp = currentTime;
+
+  return allPostCache;
 }
 
 export async function getPosts(pageSize = 10): Promise<Post[]> {
@@ -466,6 +480,7 @@ export async function downloadFile(url: URL) {
   }
 }
 
+// Maybe need to modify cache
 export async function getDatabase(): Promise<Database> {
   if (dbCache !== null) {
     return Promise.resolve(dbCache);
