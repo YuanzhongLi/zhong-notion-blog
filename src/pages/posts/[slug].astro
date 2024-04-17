@@ -88,9 +88,13 @@ await Promise.all(
 );
 
 let ogImage: string = '';
-if (post.FeaturedImage && post.FeaturedImage.Url) {
-  const ogImageURL = new URL(filePath(new URL(post.FeaturedImage.Url)), Astro.site);
-  ogImage = ogImageURL.toString();
+if (post.FeaturedImage) {
+  if (post.FeaturedImage.Url) {
+    ogImage = post.FeaturedImage.Url;
+  } else {
+    const ogImageURL = new URL(filePath(new URL(post.FeaturedImage.Url)), Astro.site);
+    ogImage = ogImageURL.toString();
+  }
 }
 
 const headings = blocks.filter((b: interfaces.Block) => ['heading_1', 'heading_2', 'heading_3'].includes(b.Type));
@@ -111,7 +115,7 @@ const tags = post.Tags;
       class="article-with-toc"
     >
       <div class="main-article">
-        <ArticleCover title={title} icon={icon} date={date} tags={tags}/>
+        <ArticleCover title={title} icon={icon} date={date} tags={tags} coverImage={ogImage === '' ? '/src/images/no-image.png' : ogImage}/>
         <MainTableOfContents headings={headings} />
         <PostBody blocks={blocks} />
       </div>

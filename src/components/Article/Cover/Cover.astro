@@ -9,6 +9,7 @@ export interface Props {
   icon: Icon;
   date: string;
   tags: SelectProperty[];
+  coverImage: string;
 }
 
 const {
@@ -16,6 +17,7 @@ const {
   icon = null,
   date = '2024-01-01',
   tags = [],
+  coverImage = '/src/images/no-image.png',
 } = Astro.props;
 
 ---
@@ -23,10 +25,10 @@ const {
   <PostTitle title={title} icon={icon} />
   <Date date={date} />
   <PostTags tags={tags} enableLink={true}/>
-  <div class="cover-image w-full">
+  <div class="cover-image w-full my-10">
     <img
       class="size-full object-cover"
-      src={'/src/images/no-image.png'}
+      src={coverImage}
       alt="Image Description"
       >
   </div>

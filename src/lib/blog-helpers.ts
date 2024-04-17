@@ -238,6 +238,13 @@ export const isFullAmazonURL = (url: URL): boolean => {
 
 export const isAmazonURL = (url: URL): boolean => isShortAmazonURL(url) || isFullAmazonURL(url);
 
+export const isGoogleMapURL = (url: URL): boolean => {
+  if (url.hostname === 'www.google.com' && url.pathname.startsWith('/maps')) {
+    return true;
+  }
+  return false;
+};
+
 export const isYouTubeURL = (url: URL): boolean => {
   if (['www.youtube.com', 'youtube.com', 'youtu.be'].includes(url.hostname)) {
     return true;
