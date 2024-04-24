@@ -1,5 +1,5 @@
 ---
-import { PUBLIC_GA_TRACKING_ID, ENABLE_LIGHTBOX } from '../server-constants';
+import { PUBLIC_GA_TRACKING_ID } from '../server-constants';
 import { getDatabase, getAllTags } from '../lib/notion/client';
 import { getNavLink, getStaticFilePath } from '../lib/blog-helpers';
 import '../styles/syntax-coloring.css';
@@ -68,14 +68,10 @@ const siteOGImage = new URL(
 
     <Footer />
     <SearchModal />
-    {
-      ENABLE_LIGHTBOX && (
-        <script src={getStaticFilePath('/scripts/fslightbox.js')} />
-      )
-    }
   </body>
 </html>
 <script is:inline src={getStaticFilePath('/scripts/preline.js')} />
+<script is:inline src={getStaticFilePath('/scripts/fslightbox.js')} />
 
 <style is:global>
   :root {
