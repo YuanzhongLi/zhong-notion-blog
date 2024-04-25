@@ -21,6 +21,7 @@ import SideTableOfContents from '../../components/Article/TableOfContents/SideTa
 import MainTableOfContents from '../../components/Article/TableOfContents/MainTableOfContents.astro';
 import RelatedBlogSections from '../../components/BlogSections/RelatedBlogSections.astro';
 import ArticleCover from '../../components/Article/Cover/Cover.astro';
+import NoImage from '../../images/no-image.png';
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
@@ -115,7 +116,7 @@ const tags = post.Tags;
       class="article-with-toc"
     >
       <div class="main-article">
-        <ArticleCover title={title} icon={icon} date={date} tags={tags} coverImage={ogImage === '' ? '/src/images/no-image.png' : ogImage}/>
+        <ArticleCover title={title} icon={icon} date={date} tags={tags} coverImage={ogImage === '' ? NoImage.src : ogImage}/>
         <MainTableOfContents headings={headings} />
         <PostBody blocks={blocks} />
       </div>

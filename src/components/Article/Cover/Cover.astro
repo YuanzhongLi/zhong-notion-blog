@@ -3,6 +3,7 @@ import type { Icon, SelectProperty } from '../../../lib/interfaces';
 import PostTitle from './PostTitle.astro';
 import Date from '../../BlogSections/Date.astro';
 import PostTags from '../../PostTags.astro';
+import NoImage from '../../../images/no-image.png';
 
 export interface Props {
   title: string;
@@ -17,7 +18,7 @@ const {
   icon = null,
   date = '2024-01-01',
   tags = [],
-  coverImage = '/src/images/no-image.png',
+  coverImage = NoImage.src,
 } = Astro.props;
 
 ---
