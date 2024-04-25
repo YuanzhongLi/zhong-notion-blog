@@ -1,8 +1,9 @@
 ---
 import SpeechBubble from './SpeechBubble.astro';
+import icon from '../../images/my_icon.svg';
 ---
 <div
-  class="home-cover bg-[url('/src/images/cover.jpg')] bg-no-repeat block w-full bg-fill bg-cover relative"
+  class="home-cover bg-[url('/src/images/home-cover.webp')] bg-no-repeat block w-full bg-fill bg-cover relative"
 >
   <!-- 背景画像を白くする -->
   <div
@@ -17,7 +18,9 @@ import SpeechBubble from './SpeechBubble.astro';
   >
     <img
       class="rounded-full border border-gray-100 shadow-lg object-cover w-full h-full"
-      src="/src/images/my_icon.svg"
+      src={icon.src}
+      loading="lazy"
+      alt="Home Cover Image"
     />
     <div class="absolute top-0 right-0 h-4 w-4 my-1 border-2 border-white rounded-full bg-green-400 z-2">
     </div>
