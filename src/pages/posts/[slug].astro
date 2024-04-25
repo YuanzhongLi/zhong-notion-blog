@@ -208,8 +208,8 @@ document.addEventListener("scroll", function() {
   tocLinks.forEach((tocLink, i) => {
     const { startPosition, endPosition } = contentPositions[i];
     if (
-      startPosition <= 0 &&
-      endPosition > 0
+      startPosition < 1 &&
+      endPosition >= 1
     ) {
       tocLink.classList.add('active');
     } else {
