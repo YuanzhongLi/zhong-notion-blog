@@ -58,7 +58,10 @@ const siteOGImage = new URL(
       integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0"
       crossorigin="anonymous"
     />
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"><!-- 180×180 -->
+    <link rel="manifest" href="/manifest.webmanifest">
   </head>
 
   <body>
@@ -69,10 +72,10 @@ const siteOGImage = new URL(
 
     <Footer />
     <SearchModal />
+    {<script src={getStaticFilePath('/scripts/fslightbox.js')} />}
   </body>
 </html>
 <script is:inline src={getStaticFilePath('/scripts/preline.js')} />
-<script is:inline src={getStaticFilePath('/scripts/fslightbox.js')} />
 
 <style is:global>
   :root {
