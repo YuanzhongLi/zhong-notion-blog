@@ -49,6 +49,7 @@ export interface Block {
   ColumnList?: ColumnList
   TableOfContents?: TableOfContents
   LinkToPage?: LinkToPage
+  ListItems?: Block[]
 }
 
 export interface Paragraph {
