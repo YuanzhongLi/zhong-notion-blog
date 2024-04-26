@@ -119,6 +119,12 @@ const tags = post.Tags;
         <ArticleCover title={title} icon={icon} date={date} tags={tags} coverImage={ogImage === '' ? NoImage.src : ogImage}/>
         <MainTableOfContents headings={headings} />
         <PostBody blocks={blocks} />
+        <button
+          id="ToTopButton" title="Go to top"
+          class="py-2 px-3 sm:py-3 sm:px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          ↑
+        </button>
       </div>
 
       <div
@@ -184,6 +190,15 @@ const tags = post.Tags;
     width: calc(85vw - var(--article-max-width));
   }
 }
+
+#ToTopButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  font-size: 1rem;
+}
 </style>
 
 <script>
@@ -217,4 +232,24 @@ document.addEventListener("scroll", function() {
     }
   });
 });
+
+const ToTopButton = document.getElementById("ToTopButton");
+ToTopButton?.addEventListener('click', toTopFunction);
+
+window.onscroll = function() { scrollFunction() };
+
+function scrollFunction() {
+  if (ToTopButton) {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    ToTopButton.style.display = "block";
+    } else {
+      ToTopButton.style.display = "none";
+    }
+  }
+}
+
+function toTopFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
 </script>
