@@ -145,7 +145,7 @@ const bookmarkURLMap = await buildURLToHTMLMap(bookmarkURLs);
       case 'column_list':
         return <ColumnList block={block} headings={headings} />;
       case 'bulleted_list':
-        return <BulletedListItems block={block} headings={headings} />;
+        return <BulletedListItems block={block} level={level} headings={headings} />;
       case 'numbered_list':
         return (
           <NumberedListItems block={block} level={level} headings={headings} />
